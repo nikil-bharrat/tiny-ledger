@@ -1,7 +1,7 @@
 import express from "express";
 import { Ledger } from "./ledger";
 
-const app = express();
+export const app = express();
 const port = 3000;
 
 // Initialise ledger
@@ -27,12 +27,10 @@ app.post("/transaction/withdrawal", (req: any, res: any) => {
   if (amount && amount > 0) {
     if (ledger.getBalance() >= amount) {
       ledger.transaction("withdrawal", amount);
-      return res
-        .status(200)
-        .json({
-          message: "Withdrawal successful",
-          balance: ledger.getBalance(),
-        });
+      return res.status(200).json({
+        message: "Withdrawal successful",
+        balance: ledger.getBalance(),
+      });
     } else {
       return res.status(400).json({ message: "Insufficient balance" });
     }

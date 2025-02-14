@@ -12,6 +12,9 @@ class Ledger {
             this.balance += amount;
         }
         else if (type === "withdrawal") {
+            if (this.balance < amount) {
+                throw new Error("Insufficient balance");
+            }
             this.balance -= amount;
         }
         else {

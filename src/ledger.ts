@@ -11,6 +11,9 @@ export class Ledger {
     if (type === "deposit") {
       this.balance += amount;
     } else if (type === "withdrawal") {
+      if (this.balance < amount) {
+        throw new Error("Insufficient balance");
+      }
       this.balance -= amount;
     } else {
       throw new Error("Transaction type must be 'deposit' or 'withdrawal'");

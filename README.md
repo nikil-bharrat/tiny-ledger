@@ -91,3 +91,8 @@
     ]
   }
   ```
+
+
+## Unit Tests
+- Run:
+`npm run test`
