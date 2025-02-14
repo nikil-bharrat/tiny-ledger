@@ -47,3 +47,47 @@
     ]
   }
   ```
+
+## Example Calls
+
+### 1. Deposit Money
+
+**POST** `/transaction/deposit`
+
+- `curl -X POST -H "Content-Type: application/json" -d '{"amount": 100}' http://localhost:3000/transaction/deposit`
+- Response: `{ "message": "Deposit successful", "balance": 100 }`
+
+### 2. Withdraw Money
+
+**POST** `/transaction/withdrawal`
+
+- `curl -X POST -H "Content-Type: application/json" -d '{"amount": 50}' http://localhost:3000/transaction/withdrawal`
+- Response: `{ "message": "Withdrawal successful", "balance": 50 }`
+
+### 3. Get Current Balance
+
+**GET** `/balance`
+
+- `curl http://localhost:3000/balance`
+- Response: `{ "balance": number }`
+
+### 4. Get Transaction History
+
+- `curl http://localhost:3000/transactions`
+- Response:
+  ```json
+  {
+    "transactions": [
+      {
+        "type": "deposit",
+        "amount": 100,
+        "timestamp": "2025-02-14T17:21:58.649Z"
+      },
+      {
+        "type": "withdrawal",
+        "amount": 50,
+        "timestamp": "2025-02-14T17:22:05.989Z"
+      }
+    ]
+  }
+  ```
