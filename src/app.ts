@@ -1,17 +1,20 @@
 import express from "express";
-import { Ledger } from "./ledger";
+import { Ledger, Account } from "./ledger";
 
 export const app = express();
 const port = 3000;
 
 // Initialise ledger
-const ledger = new Ledger();
+const account = new Account("123", 1000 )
+const account2 = new Account("456", 1000 )
+
+const ledger = new Ledger([account, account2], 0);
 
 app.use(express.json());
 
 // Endpoint to record a deposit transaction
 app.post("/transaction/deposit", (req: any, res: any) => {
-  const { amount } = req.body;
+  const amount = req.body
   if (amount && amount > 0) {
     ledger.transaction("deposit", amount);
     return res
@@ -32,7 +35,7 @@ app.post("/transaction/withdrawal", (req: any, res: any) => {
         balance: ledger.getBalance(),
       });
     } else {
-      return res.status(400).json({ message: "Insufficient balance" });
+      return res.status(400).json({ message: new InsufficientFundsError() });
     }
   }
   return res.status(400).json({ message: "Invalid withdrawal amount" });
@@ -54,3 +57,10 @@ app.get("/transactions", (req, res) => {
 app.listen(port, () => {
   console.log(`Server running at http://localhost:${port}`);
 });
+
+class InsufficientFundsError extends Error {
+  constructor() {
+    super("Insufficient balance");
+    this.name = "InsufficientFundsError";
+  }
+}

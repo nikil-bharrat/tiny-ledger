@@ -1,4 +1,16 @@
+export class Account {
+  private id: string;
+  private balance: number = 0;
+
+  constructor(id: string, balance: number = 0) {
+    this.id = id;
+    this.balance = balance;
+  }
+}
+
 export class Ledger {
+  private accounts: Account[];
+  
   private balance: number = 0;
   private transactionHistory: {
     type: string;
@@ -6,8 +18,14 @@ export class Ledger {
     timestamp: string;
   }[] = [];
 
+  constructor(accounts: Account[], initialBalance = 0) {
+    this.accounts = accounts;
+    this.balance = initialBalance;
+  }
+
+
   // Record deposit or withdrawal transaction
-  transaction(type: string, amount: number): void {
+  transaction(type: TransactionType, amount: number, accountFrom?: Account, accountTo?: Account): void {
     if (type === "deposit") {
       this.balance += amount;
     } else if (type === "withdrawal") {
@@ -15,7 +33,12 @@ export class Ledger {
         throw new Error("Insufficient balance");
       }
       this.balance -= amount;
-    } else {
+    } 
+    else if (type === "transfer") {
+      accountFrom.balance -= amount;
+      accountTo.balance += amount;
+    }
+    else {
       throw new Error("Transaction type must be 'deposit' or 'withdrawal'");
     }
 
@@ -41,3 +64,5 @@ export class Ledger {
     return this.transactionHistory;
   }
 }
+
+type TransactionType = "deposit" | "withdrawal" | "transfer";
